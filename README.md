@@ -1,7 +1,7 @@
 # Todo app 
 
-simple todo app using flutter <br/>
-libraries 
+## simple todo app using flutter <br/>
+libraries using
 - cupertino_icons
 - provider
 - flutter_text_field_fab
