@@ -1,6 +1,6 @@
 # Todo app 
 
-simple todo app using flutter
+simple todo app using flutter <br/>
 libraries 
 - cupertino_icons
 - provider
