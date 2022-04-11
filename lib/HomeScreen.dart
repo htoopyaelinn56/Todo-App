@@ -21,8 +21,12 @@ class HomeScreen extends StatelessWidget {
         onChange: (value) {},
         onClear: () async {
           if (controller.text != '') {
-            await Provider.of<TodoProvider>(context, listen: false)
-                .addTodo(Todo(name: controller.text));
+            if (!GetIt.instance.get<TodoProvider>().currentEditing) {
+              await Provider.of<TodoProvider>(context, listen: false)
+                  .addTodo(Todo(name: controller.text));
+            } else if (GetIt.instance.get<TodoProvider>().currentEditing) {
+              showToast("Can't add item while editing!");
+            }
           }
           controller.text = '';
         },
@@ -34,15 +38,6 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(child: TodoList()),
-            // ElevatedButton(
-            //     onPressed: () async {
-            //       for (var i in await GetIt.instance
-            //           .get<TodoProvider>()
-            //           .getTodoList()) {
-            //         print('${i.id} ${i.name} ${i.checked}');
-            //       }
-            //     },
-            //     child: Text('check'))
           ],
         ),
       ),

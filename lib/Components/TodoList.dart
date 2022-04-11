@@ -11,7 +11,6 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Todo>>(
@@ -21,6 +20,7 @@ class _TodoListState extends State<TodoList> {
             return const Text('loading');
           }
           List<Todo>? data = snapshot.data;
+          TextEditingController controller = TextEditingController();
           return ListView.builder(
             itemBuilder: (context, index) {
               return TodoCard(

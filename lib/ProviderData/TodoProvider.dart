@@ -37,4 +37,6 @@ class TodoProvider extends ChangeNotifier {
   Future<void> updateTodo(Todo t, String s) async {
     await _dao.updateTodo(s, t.id!);
   }
+
+  bool currentEditing = false;
 }

@@ -1,5 +1,8 @@
+import 'package:final_todo_app/ProviderData/TodoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:final_todo_app/constants.dart';
+import 'package:get_it/get_it.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TodoCard extends StatefulWidget {
   final String name;
@@ -9,6 +12,7 @@ class TodoCard extends StatefulWidget {
   final Function updatePress;
   final TextEditingController controller;
   final String currentText;
+
   TodoCard({
     required this.name,
     required this.isChecked,
@@ -25,6 +29,8 @@ class TodoCard extends StatefulWidget {
 
 class _TodoCardState extends State<TodoCard> {
   bool isEditing = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,21 +77,14 @@ class _TodoCardState extends State<TodoCard> {
                       onChanged: widget.onChanged,
                       activeColor: componentColor,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isEditing = !isEditing;
-                        });
-                      },
-                      child: Text(
-                        widget.name,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 24.0,
-                          decoration: widget.isChecked
-                              ? TextDecoration.lineThrough
-                              : null,
-                        ),
+                    Text(
+                      widget.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 24.0,
+                        decoration: widget.isChecked
+                            ? TextDecoration.lineThrough
+                            : null,
                       ),
                     )
                   ],
@@ -97,25 +96,53 @@ class _TodoCardState extends State<TodoCard> {
                       isEditing = !isEditing;
                       widget.updatePress();
                     });
+                    GetIt.instance.get<TodoProvider>().currentEditing = false;
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(right: 20),
+                    margin: const EdgeInsets.only(right: 10),
                     child: const Icon(
                       Icons.check,
                       size: 25,
                     ),
                   ),
                 )
-              : GestureDetector(
-                  onTap: widget.deletePress,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 20),
-                    child: const Icon(
-                      Icons.delete_outline,
-                      size: 25,
+              : Row(
+                  children: [
+                    GestureDetector(
+                      onTap: widget.deletePress,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        child: const Icon(
+                          Icons.delete_outline,
+                          size: 25,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                    GestureDetector(
+                      onTap: () {
+                        if (GetIt.instance.get<TodoProvider>().currentEditing) {
+                          showToast('Can only edit one item at a time!');
+                        }
+                        if (!GetIt.instance
+                            .get<TodoProvider>()
+                            .currentEditing) {
+                          setState(() {
+                            isEditing = !isEditing;
+                            GetIt.instance.get<TodoProvider>().currentEditing =
+                                true;
+                          });
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        child: const Icon(
+                          Icons.edit,
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
         ],
       ),
     );
