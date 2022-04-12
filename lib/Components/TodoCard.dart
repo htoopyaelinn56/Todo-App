@@ -30,8 +30,6 @@ class TodoCard extends StatefulWidget {
 class _TodoCardState extends State<TodoCard> {
   bool isEditing = false;
 
-
-
   @override
   Widget build(BuildContext context) {
     widget.controller.text = widget.currentText;
@@ -69,25 +67,29 @@ class _TodoCardState extends State<TodoCard> {
                     ),
                   ],
                 )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Checkbox(
-                      value: widget.isChecked,
-                      onChanged: widget.onChanged,
-                      activeColor: componentColor,
-                    ),
-                    Text(
-                      widget.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 24.0,
-                        decoration: widget.isChecked
-                            ? TextDecoration.lineThrough
-                            : null,
+              : Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        value: widget.isChecked,
+                        onChanged: widget.onChanged,
+                        activeColor: componentColor,
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Text(
+                          widget.name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 24.0,
+                            decoration: widget.isChecked
+                                ? TextDecoration.lineThrough
+                                : null,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
           isEditing
               ? GestureDetector(
